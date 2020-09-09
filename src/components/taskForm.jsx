@@ -2,6 +2,8 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import { getTask, saveTask } from "../services/taskService";
+import {getUsers} from '../services/userService'
+
 
 class TaskForm extends Form {
   state = {
@@ -9,10 +11,12 @@ class TaskForm extends Form {
       title: "",
       status: "",
       description: "",
-      comment: ""
+      comment: "",
+      owner: ""
     },
-    status: [{id:'New', name:'New'},{id:'Pending', name:'Pending'},
-    {id:'Done', name:'Done'},{id:'Approved', name:'Approved'}],
+    status: [{_id:'New', name:'New'},{_id:'Pending', name:'Pending'},
+    {_id:'Done', name:'Done'},{_id:'Approved', name:'Approved'}],
+    owners: [],
     errors: {}
   };
 
@@ -29,7 +33,10 @@ class TaskForm extends Form {
       .label("Status"),
       comment: Joi.string()
       .required()
-      .label("Comment")
+      .label("Comment"),
+      owner: Joi.string()
+      .required()
+      .label("Owner")
     
   };
 
@@ -48,6 +55,8 @@ class TaskForm extends Form {
   }
 
   async componentDidMount() {
+    const { data: owners } = await getUsers();
+     this.setState({owners});
     await this.populateTask();
   }
 
@@ -57,7 +66,8 @@ class TaskForm extends Form {
       title: task.title,
       status: task.status,
       description: task.description,
-      comment: task.comment
+      comment: task.comment,
+      owner: task.owner
     };
   }
 
@@ -71,11 +81,13 @@ class TaskForm extends Form {
     return (
       <div>
         <h1>Task Form</h1>
+        
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "Title")}
           {this.renderInput("description", "Description")}
           {this.renderSelect("status", "Status", this.state.status)}
           {this.renderInput("comment", "Comment")}
+          {this.renderSelect("owner", "Owner", this.state.owners)}
           {this.renderButton("Save")}
         </form>
       </div>

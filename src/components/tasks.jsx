@@ -86,7 +86,7 @@ class Tasks extends Component {
         <div className="col-12">
         {user && user.isAdmin &&(
           <Link
-            to="/task/new"
+            to="/tasks/new"
             className="btn btn-primary"
             style={{ marginBottom: 20 }}
           >

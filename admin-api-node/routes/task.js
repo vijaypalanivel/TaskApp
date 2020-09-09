@@ -6,8 +6,10 @@ const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  const tasks = await Task.find()
+router.get("/", [auth], async (req, res) => {
+   
+  const option = req.user.isAdmin ? {}:{owner:req.user._id}
+  const tasks = await Task.find(option)
     .sort("title");
   res.send(tasks);
 });
@@ -29,7 +31,7 @@ router.post("/", [auth], async (req, res) => {
 
 router.put("/:id", [auth], async (req, res) => {
   const { error } = validate(req.body);
-  //console.log("Error",error);
+  
   if (error) return res.status(400).send(error.details[0].message);
 
   const task = await Task.findByIdAndUpdate(
@@ -39,6 +41,7 @@ router.put("/:id", [auth], async (req, res) => {
       description: req.body.description,
       status: req.body.status,
       comment: req.body.comment,
+      owner : req.body.owner
     },
     { new: true }
   );

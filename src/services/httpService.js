@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 
 function setJwt(jwt) {
-  axios.defaults.headers.common["x-auth-token"] = jwt;
+  instance.defaults.headers.common["x-auth-token"] = jwt;
 }
 
  const instance = axios.create({

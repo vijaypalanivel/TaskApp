@@ -14,6 +14,7 @@ class TasksTable extends Component {
     { path: "description", label: "Description" },
     { path: "status", label: "Status" },
     { path: "comment", label: "Comment" }
+    //{ path: "owner", label: "Owner" },
   ];
 
   deleteColumn = {

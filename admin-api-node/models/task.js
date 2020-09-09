@@ -26,7 +26,15 @@ const Task = mongoose.model('Task', new mongoose.Schema({
     required: true,
     trim: true, 
     maxlength: 255
+  },
+  owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User'
   }
+
+}, {
+  timestamps: true
 }));
 
 function validateTask(task) {
@@ -35,6 +43,7 @@ function validateTask(task) {
     description: Joi.string().required(),
     status: Joi.string().required(),
     comment: Joi.string().required(),
+    owner: Joi.string().required()
   });
 
   return schema.validate(task);

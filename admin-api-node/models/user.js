@@ -24,6 +24,8 @@ const userSchema = new mongoose.Schema({
     maxlength: 1024
   },
   isAdmin: Boolean
+},{
+  timestamps: true
 });
 
 userSchema.methods.generateAuthToken = function() {
@@ -38,6 +40,31 @@ userSchema.methods.generateAuthToken = function() {
   );
   return token;
 };
+
+userSchema.virtual('tasks', {
+  ref: 'Task',
+  localField: '_id',
+  foreignField: 'owner'
+})
+
+userSchema.methods.toJSON = function () {
+  const user = this
+  const userObject = user.toObject()
+
+  delete userObject.password
+  delete userObject.__v
+  delete userObject.email
+
+  return userObject
+}
+
+
+// Delete user tasks when user is removed
+// userSchema.pre('remove', async function (next) {
+//   const user = this
+//   await Task.deleteMany({ owner: user._id })
+//   next()
+// })
 
 const User = mongoose.model("User", userSchema);
 

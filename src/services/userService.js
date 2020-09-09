@@ -12,6 +12,12 @@ export function register(user) {
 
 }
 
+export function getUsers() {
+  return http.get(apiEndpoint);
+}
+
+
 export default {
-  register
+  register,
+  getUsers
 };
