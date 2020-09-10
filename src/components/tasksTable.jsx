@@ -8,8 +8,8 @@ class TasksTable extends Component {
     {
       path: "title",
       label: "Title",
-      content: taks => this.user && this.user.isAdmin? 
-      <Link to={`/tasks/${taks._id}`}>{taks.title}</Link>:taks.title
+      content: taks => 
+      <Link to={`/tasks/${taks._id}`}>{taks.title}</Link>
     },
     { path: "description", label: "Description" },
     { path: "status", label: "Status" },

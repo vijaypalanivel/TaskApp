@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
 import Select from "./select";
+import Text from "./fromText";
 
 class Form extends Component {
   state = {
@@ -85,6 +86,19 @@ class Form extends Component {
       />
     );
   }
+
+  renderText(name, label) {
+    const { data } = this.state;
+
+    return (
+      <Text
+        name={name}
+        value={data[name]}
+        label={label}
+      />
+    );
+  }
+
 }
 
 export default Form;

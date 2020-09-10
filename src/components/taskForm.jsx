@@ -2,7 +2,7 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import { getTask, saveTask } from "../services/taskService";
-import {getUsers} from '../services/userService'
+import { getUsers } from '../services/userService'
 
 
 class TaskForm extends Form {
@@ -14,8 +14,8 @@ class TaskForm extends Form {
       comment: "",
       owner: ""
     },
-    status: [{_id:'New', name:'New'},{_id:'Pending', name:'Pending'},
-    {_id:'Done', name:'Done'},{_id:'Approved', name:'Approved'}],
+    status: [{ _id: 'New', name: 'New' }, { _id: 'Pending', name: 'Pending' },
+    { _id: 'Done', name: 'Done' }, { _id: 'Approved', name: 'Approved' }],
     owners: [],
     errors: {}
   };
@@ -28,16 +28,16 @@ class TaskForm extends Form {
     description: Joi.string()
       .required()
       .label("Description"),
-      status: Joi.string()
+    status: Joi.string()
       .required()
       .label("Status"),
-      comment: Joi.string()
+    comment: Joi.string()
       .required()
       .label("Comment"),
-      owner: Joi.string()
+    owner: Joi.string()
       .required()
       .label("Owner")
-    
+
   };
 
 
@@ -56,7 +56,7 @@ class TaskForm extends Form {
 
   async componentDidMount() {
     const { data: owners } = await getUsers();
-     this.setState({owners});
+    this.setState({ owners });
     await this.populateTask();
   }
 
@@ -78,16 +78,18 @@ class TaskForm extends Form {
   }
 
   render() {
+
+    const isAdmin = this.props.user?.isAdmin;
     return (
       <div>
         <h1>Task Form</h1>
-        
+
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput("title", "Title")}
+        {isAdmin? this.renderInput("title", "Title"): this.renderText("title","Title")}
           {this.renderInput("description", "Description")}
           {this.renderSelect("status", "Status", this.state.status)}
           {this.renderInput("comment", "Comment")}
-          {this.renderSelect("owner", "Owner", this.state.owners)}
+          { isAdmin && this.renderSelect("owner", "Owner", this.state.owners)}
           {this.renderButton("Save")}
         </form>
       </div>

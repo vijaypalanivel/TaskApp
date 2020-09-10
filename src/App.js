@@ -37,7 +37,9 @@ class App extends Component {
             <AdminRoute path="/users" component={UserForm} />
             <Route path="/login" component={LoginForm} />
             <Route path="/logout" component={Logout} />
-            <AdminRoute path="/tasks/:id" component={TaskForm} />
+            <ProtectedRoute 
+            path="/tasks/:id"  
+            render={props => <TaskForm {...props} user={this.state.user} />} />
             <ProtectedRoute path="/profile" component={Profile} />
             <ProtectedRoute
               path="/tasks"
